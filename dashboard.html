@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard - Project Management System</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body data-page="dashboard" data-page-attrs>
+  <div class="container-app">
+    <aside class="sidebar" id="app_sidebar">
+      <div class="brand">
+        <div class="logo"><i class="fa-solid fa-diagram-project"></i></div>
+        <div class="title">
+          <strong>ProjectPulse</strong>
+          <span>Premium PM SaaS</span>
+        </div>
+      </div>
+      <div class="nav">
+        <div class="item active" id="nav_dashboard" data-page="dashboard.html"><div class="ico"><i class="fa-solid fa-house"></i></div><div class="txt">Dashboard</div></div>
+        <div class="item" id="nav_projects" data-page="projects.html"><div class="ico"><i class="fa-solid fa-folder-open"></i></div><div class="txt">Projects</div></div>
+        <div class="item" id="nav_tasks" data-page="tasks.html"><div class="ico"><i class="fa-solid fa-list-check"></i></div><div class="txt">Tasks</div></div>
+        <div class="item" id="nav_kanban" data-page="kanban.html"><div class="ico"><i class="fa-solid fa-layer-group"></i></div><div class="txt">Kanban Board</div></div>
+        <div class="item" id="nav_calendar" data-page="calendar.html"><div class="ico"><i class="fa-regular fa-calendar"></i></div><div class="txt">Calendar</div></div>
+        <div class="item" id="nav_team" data-page="team.html"><div class="ico"><i class="fa-solid fa-users"></i></div><div class="txt">Team Members</div></div>
+        <div class="item" id="nav_reports" data-page="reports.html"><div class="ico"><i class="fa-solid fa-chart-pie"></i></div><div class="txt">Reports</div></div>
+        <div class="item" id="nav_settings" data-page="settings.html"><div class="ico"><i class="fa-solid fa-sliders"></i></div><div class="txt">Settings</div></div>
+        <div class="item" id="nav_help" data-page="about.html"><div class="ico"><i class="fa-solid fa-circle-question"></i></div><div class="txt">Help Center</div></div>
+      </div>
+      <div class="bottom">
+        <div class="theme-toggle">
+          <div class="label"><strong>Theme</strong><span>Light / Dark</span></div>
+          <label class="switch mb-0"><input type="checkbox" id="theme_toggle_checkbox" /><span class="slider"></span></label>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <button class="hamburger" id="sidebar_hamburger" aria-label="Toggle sidebar"><i class="fa-solid fa-bars"></i></button>
+        <div class="left">
+          <div style="display:flex; flex-direction:column; line-height:1.1;">
+            <strong style="font-size:14px; letter-spacing:.2px;">Welcome back</strong>
+            <span style="font-size:12px; color:var(--muted); font-weight:800;">Manage projects with clarity</span>
+          </div>
+        </div>
+        <div class="search"><i class="fa-solid fa-magnifying-glass"></i><input type="text" placeholder="Search projects, tasks, status... (demo)" /></div>
+        <div class="right">
+          <button class="icon-btn" title="Notifications"><i class="fa-solid fa-bell"></i><span class="badge-dot" id="notif_dot" style="display:none;"></span></button>
+          <button class="btn secondary" id="quick_add_project"><i class="fa-solid fa-plus me-2"></i> Add Project</button>
+        </div>
+      </div>
+
+      <section class="section" data-page-content>
+        <div class="grid dashboard-cards">
+          <div class="stat-card total" style="grid-column: span 3;"><div class="row"><div class="left"><div class="icon-box"><i class="fa-solid fa-diagram-project"></i></div><div class="meta"><div class="k">Total Projects</div><div class="v" id="stat_total_projects">0</div></div></div></div><div class="progress"><div class="bar"><span id="stat_total_projects_bar" style="width:0%"></span></div><div class="pct">Live</div></div></div>
+          <div class="stat-card active" style="grid-column: span 3;"><div class="row"><div class="left"><div class="icon-box"><i class="fa-solid fa-bolt"></i></div><div class="meta"><div class="k">Active Projects</div><div class="v" id="stat_active_projects">0</div></div></div></div><div class="progress"><div class="bar"><span style="background: linear-gradient(90deg, rgba(6,182,212,1), rgba(37,99,235,1));" id="stat_active_projects_bar">&nbsp;</span></div><div class="pct">Now</div></div></div>
+          <div class="stat-card completed" style="grid-column: span 3;"><div class="row"><div class="left"><div class="icon-box"><i class="fa-solid fa-circle-check"></i></div><div class="meta"><div class="k">Completed Projects</div><div class="v" id="stat_completed_projects">0</div></div></div></div><div class="progress"><div class="bar"><span style="background: linear-gradient(90deg, rgba(16,185,129,1), rgba(6,182,212,1));" id="stat_completed_projects_bar">&nbsp;</span></div><div class="pct">Done</div></div></div>
+          <div class="stat-card delayed" style="grid-column: span 3;"><div class="row"><div class="left"><div class="icon-box"><i class="fa-solid fa-triangle-exclamation"></i></div><div class="meta"><div class="k">Delayed Projects</div><div class="v" id="stat_delayed_projects">0</div></div></div></div><div class="progress"><div class="bar"><span style="background: linear-gradient(90deg, rgba(239,68,68,1), rgba(245,158,11,1));" id="stat_delayed_projects_bar">&nbsp;</span></div><div class="pct">Risk</div></div></div>
+          <div class="stat-card pending" style="grid-column: span 3;"><div class="row"><div class="left"><div class="icon-box"><i class="fa-solid fa-clock"></i></div><div class="meta"><div class="k">Total Tasks</div><div class="v" id="stat_total_tasks">0</div></div></div></div><div class="progress"><div class="bar"><span style="background: linear-gradient(90deg, rgba(245,158,11,1), rgba(37,99,235,1));" id="stat_total_tasks_bar">&nbsp;</span></div><div class="pct">Tasks</div></div></div>
+          <div class="stat-card completed" style="grid-column: span 3;"><div class="row"><div class="left"><div class="icon-box"><i class="fa-solid fa-check-double"></i></div><div class="meta"><div class="k">Completed Tasks</div><div class="v" id="stat_completed_tasks">0</div></div></div></div><div class="progress"><div class="bar"><span style="background: linear-gradient(90deg, rgba(16,185,129,1), rgba(6,182,212,1));" id="stat_completed_tasks_bar">&nbsp;</span></div><div class="pct">Done</div></div></div>
+          <div class="stat-card pending" style="grid-column: span 3;"><div class="row"><div class="left"><div class="icon-box"><i class="fa-solid fa-list"></i></div><div class="meta"><div class="k">Pending Tasks</div><div class="v" id="stat_pending_tasks">0</div></div></div></div><div class="progress"><div class="bar"><span style="background: linear-gradient(90deg, rgba(245,158,11,1), rgba(239,68,68,1));" id="stat_pending_tasks_bar">&nbsp;</span></div><div class="pct">Due</div></div></div>
+          <div class="stat-card active" style="grid-column: span 3;"><div class="row"><div class="left"><div class="icon-box"><i class="fa-solid fa-users"></i></div><div class="meta"><div class="k">Team Members</div><div class="v" id="stat_team_members">0</div></div></div></div><div class="progress"><div class="bar"><span style="background: linear-gradient(90deg, rgba(6,182,212,1), rgba(37,99,235,1));" id="stat_team_members_bar">&nbsp;</span></div><div class="pct">Team</div></div></div>
+        </div>
+
+        <div class="row g-4 mt-2">
+          <div class="col-12 col-lg-7">
+            <div class="panel">
+              <div class="hd"><h3>Project Completion</h3><span>Progress across tasks</span></div>
+              <div class="body pb-3">
+                <div style="display:flex; align-items:center; justify-content:space-between; gap:14px; padding:0 0 8px;">
+                  <div>
+                    <div style="font-size:13px; color:var(--muted); font-weight:900;">Completion Rate</div>
+                    <div style="font-size:28px; font-weight:1000; letter-spacing:-.5px;" id="project_completion_pct">0%</div>
+                  </div>
+                  <div style="min-width:220px; flex:1;">
+                    <div class="progress"><div class="bar" style="height:10px;"><span id="project_completion_bar" style="width:0%"></span></div><div class="pct">Updated</div></div>
+                  </div>
+                </div>
+                <div style="height:240px; display:flex; align-items:center; justify-content:center; color:var(--muted); font-weight:900;">
+                  <i class="fa-solid fa-chart-column" style="font-size:34px;"></i>
+                  <div style="margin-left:12px;">Charts render in Reports</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-lg-5">
+            <div class="panel"><div class="hd"><h3>Recent Activities</h3><span>System timeline</span></div><div class="body"><div class="list" id="recent_activities_list"></div></div></div>
+            <div class="panel mt-4"><div class="hd"><h3>Upcoming Deadlines</h3><span>Next due tasks</span></div><div class="body"><div class="list" id="upcoming_deadlines_list"></div></div></div>
+            <div class="panel mt-4"><div class="hd"><h3>Notifications</h3><span>Read/Unread</span></div><div class="body"><div class="list" id="notifications_list"></div></div></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const items = document.querySelectorAll('.sidebar .item[data-page]');
+    items.forEach(it=>it.addEventListener('click', ()=> location.href = it.getAttribute('data-page')));
+    const hb = document.getElementById('sidebar_hamburger');
+    const sb = document.getElementById('app_sidebar');
+    if(hb && sb) hb.addEventListener('click', ()=> sb.classList.toggle('open'));
+  </script>
+
+  <script src="script.js"></script>
+
+  <footer style="margin: left 40px; padding:18px 22px 24px;">
+    <div class="panel" style="border-radius:16px; padding:14px 16px; background: rgba(255,255,255,.45);">
+<div style="display:flex; flex-wrap:wrap; gap:10px; justify-content:flex-start; align-items:center; padding-left:50%; transform:translateX(-50%);">
+        <div style="color:var(--muted); font-weight:900; font-size:12px;">
+          Mini Project Developed By:
+          <span class="kbd">23AK1A3621 (Janaka Tejeswar)</span>
+          <span class="kbd">23AK1A3632 (Rohith)</span>
+          <span class="kbd">24AK5A3604 (Nani)</span>
+        </div>
+        <div style="color:var(--muted); font-weight:900; font-size:12px;">
+          Note: Still features are under development.
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
+
+

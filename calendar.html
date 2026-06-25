@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Calendar - Project Management System</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body data-page="calendar">
+  <div class="container-app">
+    <aside class="sidebar" id="app_sidebar">
+      <div class="brand">
+        <div class="logo"><i class="fa-solid fa-diagram-project"></i></div>
+        <div class="title"><strong>ProjectPulse</strong><span>Premium PM SaaS</span></div>
+      </div>
+
+      <div class="nav">
+        <div class="item" id="nav_dashboard" data-page="dashboard.html"><div class="ico"><i class="fa-solid fa-house"></i></div><div class="txt">Dashboard</div></div>
+        <div class="item" id="nav_projects" data-page="projects.html"><div class="ico"><i class="fa-solid fa-folder-open"></i></div><div class="txt">Projects</div></div>
+        <div class="item" id="nav_tasks" data-page="tasks.html"><div class="ico"><i class="fa-solid fa-list-check"></i></div><div class="txt">Tasks</div></div>
+        <div class="item" id="nav_kanban" data-page="kanban.html"><div class="ico"><i class="fa-solid fa-layer-group"></i></div><div class="txt">Kanban Board</div></div>
+        <div class="item active" id="nav_calendar" data-page="calendar.html"><div class="ico"><i class="fa-regular fa-calendar"></i></div><div class="txt">Calendar</div></div>
+        <div class="item" id="nav_team" data-page="team.html"><div class="ico"><i class="fa-solid fa-users"></i></div><div class="txt">Team Members</div></div>
+        <div class="item" id="nav_reports" data-page="reports.html"><div class="ico"><i class="fa-solid fa-chart-pie"></i></div><div class="txt">Reports</div></div>
+        <div class="item" id="nav_settings" data-page="settings.html"><div class="ico"><i class="fa-solid fa-sliders"></i></div><div class="txt">Settings</div></div>
+        <div class="item" id="nav_help" data-page="about.html"><div class="ico"><i class="fa-solid fa-circle-question"></i></div><div class="txt">Help Center</div></div>
+      </div>
+
+      <div class="bottom">
+        <div class="theme-toggle">
+          <div class="label"><strong>Theme</strong><span>Light / Dark</span></div>
+          <label class="switch mb-0"><input type="checkbox" id="theme_toggle_checkbox" /><span class="slider"></span></label>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <button class="hamburger" id="sidebar_hamburger" aria-label="Toggle sidebar"><i class="fa-solid fa-bars"></i></button>
+
+        <div class="left">
+          <div style="display:flex; flex-direction:column; line-height:1.1;">
+            <strong style="font-size:14px; letter-spacing:.2px;">Calendar</strong>
+            <span style="font-size:12px; color:var(--muted); font-weight:800;">Month view • deadlines</span>
+          </div>
+        </div>
+
+        <div class="search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" placeholder="Search events... (demo)" />
+        </div>
+
+        <div class="right">
+          <button class="icon-btn" title="Notifications"><i class="fa-solid fa-bell"></i><span class="badge-dot" id="notif_dot" style="display:none;"></span></button>
+          <button class="btn secondary" disabled><i class="fa-solid fa-plus me-2"></i> Add Event</button>
+        </div>
+      </div>
+
+      <section class="section">
+        <div class="row g-4">
+          <div class="col-12 col-lg-8">
+            <div class="panel">
+              <div class="hd"><h3>Project Calendar</h3><span id="calendar_range_label">—</span></div>
+              <div class="body">
+                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+                  <div class="d-flex gap-2">
+                    <button class="sm-btn" id="cal_prev"><i class="fa-solid fa-chevron-left me-2"></i>Prev</button>
+                    <button class="sm-btn" id="cal_today"><i class="fa-solid fa-bullseye me-2"></i>Today</button>
+                    <button class="sm-btn" id="cal_next">Next<i class="fa-solid fa-chevron-right ms-2"></i></button>
+                  </div>
+                  <div class="d-flex gap-2">
+                    <span class="kbd"><i class="fa-solid fa-calendar-days"></i> Month</span>
+                    <span class="kbd"><i class="fa-solid fa-clock"></i> Deadline highlights</span>
+                  </div>
+                </div>
+
+                <div class="table-wrap">
+                  <table class="table mb-0" style="min-width:720px;">
+                    <thead>
+                      <tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr>
+                    </thead>
+                    <tbody id="calendar_grid"></tbody>
+                  </table>
+                </div>
+
+                <div class="mt-3" style="color:var(--muted); font-weight:900; font-size:12px;">
+                  Legend: <span class="pill primary" style="padding:5px 10px;">Deadline</span>
+                  <span class="pill amber" style="padding:5px 10px;">Overdue</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-lg-4">
+            <div class="panel">
+              <div class="hd"><h3>Deadline Reminder</h3><span>Upcoming</span></div>
+              <div class="body"><div class="list" id="calendar_upcoming"></div></div>
+            </div>
+
+            <div class="panel mt-4">
+              <div class="hd"><h3>Overdue Tasks</h3><span>Needs attention</span></div>
+              <div class="body"><div class="list" id="calendar_overdue"></div></div>
+            </div>
+
+            <div class="panel mt-4">
+              <div class="hd"><h3>Milestones</h3><span>Demo events</span></div>
+              <div class="body"><div class="list" id="calendar_milestones"></div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const items = document.querySelectorAll('.sidebar .item[data-page]');
+    items.forEach(it => it.addEventListener('click', () => location.href = it.getAttribute('data-page')));
+    const hb = document.getElementById('sidebar_hamburger');
+    const sb = document.getElementById('app_sidebar');
+    if(hb && sb) hb.addEventListener('click', () => sb.classList.toggle('open'));
+
+    function loadTasks(){
+      try{ return JSON.parse(localStorage.getItem('pms_tasks')||'[]'); }catch{ return []; }
+    }
+    const tasks = loadTasks();
+
+    const grid = document.getElementById('calendar_grid');
+    const label = document.getElementById('calendar_range_label');
+    const upcomingEl = document.getElementById('calendar_upcoming');
+    const overdueEl = document.getElementById('calendar_overdue');
+    const milestonesEl = document.getElementById('calendar_milestones');
+
+    const deadlineMap = new Map();
+    tasks.forEach(t => {
+      if(!t.deadline) return;
+      const key = t.deadline;
+      if(!deadlineMap.has(key)) deadlineMap.set(key, []);
+      deadlineMap.get(key).push(t);
+    });
+
+    const today = new Date();
+    let view = new Date(today.getFullYear(), today.getMonth(), 1);
+
+    const fmtDay = (d)=> d.toISOString().slice(0,10);
+
+    function renderMonth(){
+      const y = view.getFullYear();
+      const m = view.getMonth();
+      const first = new Date(y,m,1);
+      const firstDay = first.getDay();
+      const weeks = [];
+
+      const startDate = new Date(y,m,1-firstDay);
+      for(let w=0; w<6; w++){
+        const week = [];
+        for(let d=0; d<7; d++){
+          const cur = new Date(startDate);
+          cur.setDate(startDate.getDate()+w*7+d);
+          week.push(cur);
+        }
+        weeks.push(week);
+      }
+
+      if(label) label.textContent = view.toLocaleString([], {month:'long', year:'numeric'});
+      if(!grid) return;
+
+      const html = weeks.map(week=>{
+        const tds = week.map(day=>{
+          const key = fmtDay(day);
+          const inMonth = day.getMonth()===m;
+          const list = deadlineMap.get(key) || [];
+          const overdue = list.some(t => t.deadline && new Date(t.deadline).getTime() < Date.now() && !['Completed','Cancelled'].includes(t.status));
+
+          const cls = overdue ? 'pill amber' : 'pill primary';
+          const badge = list.length ? `<div style="margin-top:4px; display:flex; justify-content:center;"><span class="${cls}" style="padding:4px 8px; font-size:11px; font-weight:1000;">${list.length}</span></div>` : '';
+
+          return `<td style="height:72px; vertical-align:top; opacity:${inMonth?1:.35};">
+                    <div style="font-weight:1000; font-size:12px; color:var(--muted);">${day.getDate()}</div>
+                    ${badge}
+                  </td>`;
+        }).join('');
+        return `<tr>${tds}</tr>`;
+      }).join('');
+
+      grid.innerHTML = html;
+    }
+
+    function renderUpcoming(){
+      if(!upcomingEl) return;
+      const now = Date.now();
+      const upcoming = tasks
+        .filter(t=>t.deadline)
+        .map(t=>({t, dt: new Date(t.deadline)}))
+        .filter(x => x.dt.getTime() >= now && x.dt.getTime() <= now + 7*24*3600*1000 && !['Completed','Cancelled'].includes(x.t.status))
+        .sort((a,b)=>a.dt-b.dt)
+        .slice(0,8)
+        .map(x=>x.t);
+
+      upcomingEl.innerHTML = upcoming.length
+        ? upcoming.map(t=>`
+            <div class="list-item">
+              <div class="li-left">
+                <div class="ico"><i class="fa-regular fa-clock"></i></div>
+                <div class="txt">
+                  <strong>${t.name}</strong>
+                  <small>Deadline: ${t.deadline}</small>
+                  <small>${t.status}</small>
+                </div>
+              </div>
+              <div class="li-right"><span class="pill amber" style="padding:5px 10px;">Soon</span></div>
+            </div>
+          `).join('')
+        : '<div class="list-item"><div class="li-left"><div class="txt"><strong>No upcoming deadlines</strong><small>You\'re on track.</small></div></div></div>';
+    }
+
+    function renderOverdue(){
+      if(!overdueEl) return;
+      const overdue = tasks
+        .filter(t=>t.deadline)
+        .filter(t => !['Completed','Cancelled'].includes(t.status) && new Date(t.deadline).getTime() < Date.now())
+        .slice(0,8);
+
+      overdueEl.innerHTML = overdue.length
+        ? overdue.map(t=>`
+            <div class="list-item">
+              <div class="li-left">
+                <div class="ico"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <div class="txt">
+                  <strong>${t.name}</strong>
+                  <small>Deadline: ${t.deadline}</small>
+                  <small>Status: ${t.status}</small>
+                </div>
+              </div>
+              <div class="li-right"><span class="pill red" style="padding:5px 10px;">Overdue</span></div>
+            </div>
+          `).join('')
+        : '<div class="list-item"><div class="li-left"><div class="txt"><strong>No overdue tasks</strong><small>Great work!</small></div></div></div>';
+    }
+
+    function renderMilestones(){
+      if(!milestonesEl) return;
+      const demo = [
+        {title:'Sprint Planning', date: new Date(today.getFullYear(), today.getMonth(), today.getDate()+3).toISOString().slice(0,10)},
+        {title:'Design Review', date: new Date(today.getFullYear(), today.getMonth(), today.getDate()+10).toISOString().slice(0,10)},
+        {title:'Release Candidate', date: new Date(today.getFullYear(), today.getMonth()+1, 5).toISOString().slice(0,10)}
+      ];
+      milestonesEl.innerHTML = demo.map(m=>`
+        <div class="list-item">
+          <div class="li-left">
+            <div class="ico"><i class="fa-solid fa-flag"></i></div>
+            <div class="txt"><strong>${m.title}</strong><small>${m.date}</small></div>
+          </div>
+          <div class="li-right"><span class="pill cyan" style="padding:5px 10px;">Milestone</span></div>
+        </div>
+      `).join('');
+    }
+
+    document.getElementById('cal_prev')?.addEventListener('click', ()=>{ view.setMonth(view.getMonth()-1); renderMonth();});
+    document.getElementById('cal_next')?.addEventListener('click', ()=>{ view.setMonth(view.getMonth()+1); renderMonth();});
+    document.getElementById('cal_today')?.addEventListener('click', ()=>{ view = new Date(today.getFullYear(), today.getMonth(), 1); renderMonth();});
+
+    renderMonth();
+    renderUpcoming();
+    renderOverdue();
+    renderMilestones();
+  </script>
+
+  <script src="script.js"></script>
+
+  <footer style="margin-left:0; padding:18px 22px 24px;">
+    <div class="panel" style="border-radius:16px; padding:14px 16px; background: rgba(255,255,255,.45);">
+<div style="display:flex; flex-wrap:wrap; gap:10px; justify-content:flex-start; align-items:center; padding-left:50%; transform:translateX(-50%);">
+        <div style="color:var(--muted); font-weight:900; font-size:12px;">
+          Mini Project Developed By:
+          <span class="kbd">23AK1A3621 (Janaka Tejeswar)</span>
+          <span class="kbd">23AK1A3632 (Rohith)</span>
+          <span class="kbd">24AK5A3604 (Nani)</span>
+        </div>
+        <div style="color:var(--muted); font-weight:900; font-size:12px;">
+          Note: Still features are under development.
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
+

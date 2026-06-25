@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tasks - Project Management System</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body data-page="tasks">
+  <div class="container-app">
+    <aside class="sidebar" id="app_sidebar">
+      <div class="brand">
+        <div class="logo"><i class="fa-solid fa-diagram-project"></i></div>
+        <div class="title">
+          <strong>ProjectPulse</strong>
+          <span>Premium PM SaaS</span>
+        </div>
+      </div>
+
+      <div class="nav">
+        <div class="item" id="nav_dashboard" data-page="dashboard.html"><div class="ico"><i class="fa-solid fa-house"></i></div><div class="txt">Dashboard</div></div>
+        <div class="item" id="nav_projects" data-page="projects.html"><div class="ico"><i class="fa-solid fa-folder-open"></i></div><div class="txt">Projects</div></div>
+        <div class="item active" id="nav_tasks" data-page="tasks.html"><div class="ico"><i class="fa-solid fa-list-check"></i></div><div class="txt">Tasks</div></div>
+        <div class="item" id="nav_kanban" data-page="kanban.html"><div class="ico"><i class="fa-solid fa-layer-group"></i></div><div class="txt">Kanban Board</div></div>
+        <div class="item" id="nav_calendar" data-page="calendar.html"><div class="ico"><i class="fa-regular fa-calendar"></i></div><div class="txt">Calendar</div></div>
+        <div class="item" id="nav_team" data-page="team.html"><div class="ico"><i class="fa-solid fa-users"></i></div><div class="txt">Team Members</div></div>
+        <div class="item" id="nav_reports" data-page="reports.html"><div class="ico"><i class="fa-solid fa-chart-pie"></i></div><div class="txt">Reports</div></div>
+        <div class="item" id="nav_settings" data-page="settings.html"><div class="ico"><i class="fa-solid fa-sliders"></i></div><div class="txt">Settings</div></div>
+        <div class="item" id="nav_help" data-page="about.html"><div class="ico"><i class="fa-solid fa-circle-question"></i></div><div class="txt">Help Center</div></div>
+      </div>
+
+      <div class="bottom">
+        <div class="theme-toggle">
+          <div class="label"><strong>Theme</strong><span>Light / Dark</span></div>
+          <label class="switch mb-0">
+            <input type="checkbox" id="theme_toggle_checkbox" />
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <button class="hamburger" id="sidebar_hamburger" aria-label="Toggle sidebar"><i class="fa-solid fa-bars"></i></button>
+
+        <div class="left">
+          <div style="display:flex; flex-direction:column; line-height:1.1;">
+            <strong style="font-size:14px; letter-spacing:.2px;">Tasks</strong>
+            <span style="font-size:12px; color:var(--muted); font-weight:800;">Track work items & progress</span>
+          </div>
+        </div>
+
+        <div class="search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" placeholder="Search tasks... (demo)" />
+        </div>
+
+        <div class="right">
+          <button class="icon-btn" title="Notifications">
+            <i class="fa-solid fa-bell"></i>
+            <span class="badge-dot" id="notif_dot" style="display:none;"></span>
+          </button>
+          <button class="btn secondary" disabled><i class="fa-solid fa-plus me-2"></i> Add Task</button>
+        </div>
+      </div>
+
+      <section class="section">
+        <div class="panel">
+          <div class="hd">
+            <h3>Task List</h3>
+            <span>Drag & drop status in Kanban</span>
+          </div>
+
+          <div class="body">
+            <div class="table-wrap">
+              <table class="table mb-0">
+                <thead>
+                  <tr>
+                    <th style="width:110px;">Task ID</th>
+                    <th>Task</th>
+                    <th style="width:120px;">Priority</th>
+                    <th style="width:120px;">Deadline</th>
+                    <th style="width:140px;">Status</th>
+                    <th style="width:160px;">Assigned</th>
+                    <th style="width:150px;">Category</th>
+                    <th style="width:110px;">Progress</th>
+                    <th style="width:220px;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="tasks_table_body">
+                  <tr><td colspan="9" style="color:var(--muted); font-weight:900;">Loading tasks...</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="mt-3 d-flex flex-wrap gap-2" style="align-items:center; justify-content:space-between;">
+              <div style="color:var(--muted); font-weight:900; font-size:12px;">
+                Tip: Update status using <span class="kbd"><i class="fa-solid fa-layer-group"></i> Kanban</span>
+              </div>
+              <div class="d-flex gap-2">
+                <a href="kanban.html" class="btn secondary"><i class="fa-solid fa-route me-2"></i> Go to Kanban</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const items = document.querySelectorAll('.sidebar .item[data-page]');
+    items.forEach(it => it.addEventListener('click', () => location.href = it.getAttribute('data-page')));
+    const hb = document.getElementById('sidebar_hamburger');
+    const sb = document.getElementById('app_sidebar');
+    if (hb && sb) hb.addEventListener('click', () => sb.classList.toggle('open'));
+
+    window.addEventListener('DOMContentLoaded', () => {
+      if (typeof renderTasksTable === 'function') renderTasksTable();
+    });
+  </script>
+
+  <script src="script.js"></script>
+
+  <footer style="margin-left:0; padding:18px 22px 24px;">
+    <div class="panel" style="border-radius:16px; padding:14px 16px; background: rgba(255,255,255,.45);">
+<div style="display:flex; flex-wrap:wrap; gap:10px; justify-content:flex-start; align-items:center; padding-left:50%; transform:translateX(-50%);">
+        <div style="color:var(--muted); font-weight:900; font-size:12px;">
+          Mini Project Developed By:
+          <span class="kbd">23AK1A3621 (Janaka Tejeswar)</span>
+          <span class="kbd">23AK1A3632 (Rohith)</span>
+          <span class="kbd">24AK5A3604 (Nani)</span>
+        </div>
+        <div style="color:var(--muted); font-weight:900; font-size:12px;">
+          Note: Still features are under development.
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
+

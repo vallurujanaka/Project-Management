@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Reports - Project Management System</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body data-page="reports">
+  <div class="container-app">
+    <aside class="sidebar" id="app_sidebar">
+      <div class="brand">
+        <div class="logo"><i class="fa-solid fa-diagram-project"></i></div>
+        <div class="title"><strong>ProjectPulse</strong><span>Premium PM SaaS</span></div>
+      </div>
+
+      <div class="nav">
+        <div class="item" id="nav_dashboard" data-page="dashboard.html"><div class="ico"><i class="fa-solid fa-house"></i></div><div class="txt">Dashboard</div></div>
+        <div class="item" id="nav_projects" data-page="projects.html"><div class="ico"><i class="fa-solid fa-folder-open"></i></div><div class="txt">Projects</div></div>
+        <div class="item" id="nav_tasks" data-page="tasks.html"><div class="ico"><i class="fa-solid fa-list-check"></i></div><div class="txt">Tasks</div></div>
+        <div class="item" id="nav_kanban" data-page="kanban.html"><div class="ico"><i class="fa-solid fa-layer-group"></i></div><div class="txt">Kanban Board</div></div>
+        <div class="item" id="nav_calendar" data-page="calendar.html"><div class="ico"><i class="fa-regular fa-calendar"></i></div><div class="txt">Calendar</div></div>
+        <div class="item" id="nav_team" data-page="team.html"><div class="ico"><i class="fa-solid fa-users"></i></div><div class="txt">Team Members</div></div>
+        <div class="item active" id="nav_reports" data-page="reports.html"><div class="ico"><i class="fa-solid fa-chart-pie"></i></div><div class="txt">Reports</div></div>
+        <div class="item" id="nav_settings" data-page="settings.html"><div class="ico"><i class="fa-solid fa-sliders"></i></div><div class="txt">Settings</div></div>
+        <div class="item" id="nav_help" data-page="about.html"><div class="ico"><i class="fa-solid fa-circle-question"></i></div><div class="txt">Help Center</div></div>
+      </div>
+
+      <div class="bottom">
+        <div class="theme-toggle">
+          <div class="label"><strong>Theme</strong><span>Light / Dark</span></div>
+          <label class="switch mb-0"><input type="checkbox" id="theme_toggle_checkbox" /><span class="slider"></span></label>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <button class="hamburger" id="sidebar_hamburger" aria-label="Toggle sidebar"><i class="fa-solid fa-bars"></i></button>
+        <div class="left">
+          <div style="display:flex; flex-direction:column; line-height:1.1;">
+            <strong style="font-size:14px; letter-spacing:.2px;">Reports</strong>
+            <span style="font-size:12px; color:var(--muted); font-weight:800;">Charts, statistics, exports</span>
+          </div>
+        </div>
+        <div class="search"><i class="fa-solid fa-magnifying-glass"></i><input type="text" placeholder="Search reports... (demo)" /></div>
+        <div class="right">
+          <button class="icon-btn" title="Notifications"><i class="fa-solid fa-bell"></i><span class="badge-dot" id="notif_dot" style="display:none;"></span></button>
+          <button class="btn primary" id="btn_export_csv"><i class="fa-solid fa-file-csv me-2"></i>Export CSV</button>
+        </div>
+      </div>
+
+      <section class="section">
+        <div class="row g-4">
+          <div class="col-12 col-lg-7">
+            <div class="panel">
+              <div class="hd">
+                <h3>Analytics Dashboard</h3>
+                <span>Chart.js powered</span>
+              </div>
+              <div class="body">
+                <div class="row g-4">
+                  <div class="col-12">
+                    <div style="background:rgba(255,255,255,.35); border:1px solid rgba(226,232,240,.55); border-radius:16px; padding:14px;">
+                      <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:10px;">
+                        <div>
+                          <div style="font-weight:1000; font-size:14px;">Project Completion</div>
+                          <div style="color:var(--muted); font-weight:900; font-size:12px;">Completed vs Total tasks</div>
+                        </div>
+                        <span class="pill primary">Live</span>
+                      </div>
+                      <canvas id="chart_project_completion" height="110"></canvas>
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-md-6">
+                    <div style="background:rgba(255,255,255,.35); border:1px solid rgba(226,232,240,.55); border-radius:16px; padding:14px;">
+                      <div style="font-weight:1000; font-size:14px;">Task Status</div>
+                      <div style="color:var(--muted); font-weight:900; font-size:12px;">To Do / In Progress / Review / Testing / Completed</div>
+                      <canvas id="chart_task_status" height="120"></canvas>
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-md-6">
+                    <div style="background:rgba(255,255,255,.35); border:1px solid rgba(226,232,240,.55); border-radius:16px; padding:14px;">
+                      <div style="font-weight:1000; font-size:14px;">Priority Distribution</div>
+                      <div style="color:var(--muted); font-weight:900; font-size:12px;">Low / Medium / High / Critical</div>
+                      <canvas id="chart_priority" height="120"></canvas>
+                    </div>
+                  </div>
+
+                  <div class="col-12">
+                    <div style="background:rgba(255,255,255,.35); border:1px solid rgba(226,232,240,.55); border-radius:16px; padding:14px;">
+                      <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:10px;">
+                        <div>
+                          <div style="font-weight:1000; font-size:14px;">Monthly Progress (Demo)</div>
+                          <div style="color:var(--muted); font-weight:900; font-size:12px;">Line chart with smooth tooltips</div>
+                        </div>
+                        <span class="pill cyan">Preview</span>
+                      </div>
+                      <canvas id="chart_monthly" height="120"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-lg-5">
+            <div class="panel">
+              <div class="hd">
+                <h3>Reports Center</h3>
+                <span>Summary tables</span>
+              </div>
+              <div class="body">
+                <div class="list" id="reports_summary_list"></div>
+
+                <div class="mt-4">
+                  <div class="hd" style="padding:0 0 12px; border:0;">
+                    <h3 style="font-size:14px; margin:0;">Completion Report</h3>
+                    <span style="color:var(--muted); font-weight:900; font-size:12px;">Success rate</span>
+                  </div>
+                  <div id="completion_report_box" style="border-radius:16px; border:1px solid rgba(226,232,240,.55); background:rgba(255,255,255,.35); padding:14px;">
+                    <div style="display:flex; justify-content:space-between; gap:12px; align-items:center;">
+                      <div>
+                        <div style="font-size:12px; color:var(--muted); font-weight:1000;">Success Rate</div>
+                        <div style="font-size:30px; font-weight:1000; letter-spacing:-.5px;" id="success_rate_value">0%</div>
+                      </div>
+                      <div style="min-width:220px; flex:1;">
+                        <div class="progress"><div class="bar" style="height:10px;"><span id="success_rate_bar" style="width:0%"></span></div><div class="pct" id="success_rate_label">—</div></div>
+                      </div>
+                    </div>
+                    <div style="margin-top:10px; color:var(--muted); font-weight:900; font-size:12px;">
+                      Projects, tasks and completion are computed from LocalStorage.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel mt-4">
+              <div class="hd">
+                <h3>Export</h3>
+                <span>PDF/Excel/CSV (demo)</span>
+              </div>
+              <div class="body">
+                <div class="d-flex flex-wrap gap-2">
+                  <button class="btn secondary" id="btn_export_json"><i class="fa-solid fa-file-code me-2"></i>Export JSON</button>
+                  <button class="btn secondary" id="btn_export_excel" disabled><i class="fa-solid fa-table-cells me-2"></i>Excel</button>
+                  <button class="btn secondary" id="btn_export_pdf" disabled><i class="fa-regular fa-file-pdf me-2"></i>PDF</button>
+                </div>
+                <div class="mt-3" style="color:var(--muted); font-weight:900; font-size:12px;">
+                  CSV/JSON export works in this template. PDF/Excel are placeholders for future enhancement.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const items = document.querySelectorAll('.sidebar .item[data-page]');
+    items.forEach(it => it.addEventListener('click', () => location.href = it.getAttribute('data-page')));
+    const hb = document.getElementById('sidebar_hamburger');
+    const sb = document.getElementById('app_sidebar');
+    if(hb && sb) hb.addEventListener('click', () => sb.classList.toggle('open'));
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="script.js"></script>
+
+  <script>
+    function getAll(){
+      const projects = JSON.parse(localStorage.getItem('pms_projects') || '[]');
+      const tasks = JSON.parse(localStorage.getItem('pms_tasks') || '[]');
+      return {projects,tasks};
+    }
+
+    function buildCharts(){
+      const {tasks} = getAll();
+      const completedTasks = tasks.filter(t=>t.status==='Completed').length;
+      const totalTasks = tasks.length;
+      const completionRate = totalTasks ? (completedTasks/totalTasks)*100 : 0;
+
+      document.getElementById('success_rate_value').textContent = `${Math.round(completionRate)}%`;
+      document.getElementById('success_rate_bar').style.width = `${Math.round(completionRate)}%`;
+      document.getElementById('success_rate_label').textContent = totalTasks ? `${completedTasks}/${totalTasks}` : '—';
+
+      const statusOrder = ['To Do','In Progress','Review','Testing','Completed'];
+      const statusCounts = statusOrder.map(s=>tasks.filter(t=>t.status===s).length);
+
+      const priCounts = {
+        Low: tasks.filter(t=>t.priority==='Low').length,
+        Medium: tasks.filter(t=>t.priority==='Medium').length,
+        High: tasks.filter(t=>t.priority==='High').length,
+        Critical: tasks.filter(t=>t.priority==='Critical').length
+      };
+
+      const colors = { blue:'#2563EB', cyan:'#06B6D4', green:'#10B981', amber:'#F59E0B', red:'#EF4444' };
+
+      const isDark = document.documentElement.dataset.theme==='dark';
+      const gridColor = isDark ? 'rgba(226,232,240,.12)' : 'rgba(2,6,23,.08)';
+      const tickColor = isDark ? '#F8FAFC' : '#475569';
+
+      new Chart(document.getElementById('chart_project_completion'), {
+        type:'doughnut',
+        data:{
+          labels:['Completed','Pending'],
+          datasets:[{ data:[completedTasks, Math.max(0,totalTasks-completedTasks)], backgroundColor:[colors.green, colors.amber], borderWidth:0 }]
+        },
+        options:{
+          responsive:true,
+          plugins:{ legend:{ position:'bottom', labels:{ color: tickColor, font:{ weight:'900' } } }, tooltip:{} },
+          cutout:'62%',
+          animation:{ duration:900 }
+        }
+      });
+
+      new Chart(document.getElementById('chart_task_status'), {
+        type:'bar',
+        data:{ labels:statusOrder, datasets:[{ data:statusCounts, backgroundColor:[colors.blue, colors.cyan, colors.cyan, colors.amber, colors.green], borderWidth:0 }] },
+        options:{
+          responsive:true,
+          scales:{ y:{ grid:{ color:gridColor }, ticks:{ color: tickColor, font:{ weight:'800' } } }, x:{ ticks:{ color: tickColor, font:{ weight:'800' } }, grid:{ display:false } } },
+          plugins:{ legend:{ display:false }, tooltip:{ intersect:false, mode:'index' } },
+          animation:{ duration:900 }
+        }
+      });
+
+      new Chart(document.getElementById('chart_priority'), {
+        type:'pie',
+        data:{ labels:['Low','Medium','High','Critical'], datasets:[{ data:[priCounts.Low, priCounts.Medium, priCounts.High, priCounts.Critical], backgroundColor:['#94A3B8', colors.blue, colors.amber, colors.red] }] },
+        options:{
+          responsive:true,
+          plugins:{ legend:{ position:'bottom', labels:{ color: tickColor, font:{ weight:'900' } } } },
+          animation:{ duration:900 }
+        }
+      });
+
+      const labels = ['Jan','Feb','Mar','Apr','May','Jun'];
+      const values = labels.map((_,i)=> Math.round(completionRate + (i-2)*3));
+
+      new Chart(document.getElementById('chart_monthly'), {
+        type:'line',
+        data:{
+          labels,
+          datasets:[{ label:'Progress %', data: values.map(v=>Math.max(0,Math.min(100,v))), borderColor: colors.blue, backgroundColor:'rgba(37,99,235,.15)', fill:true, tension:.35, pointRadius:3 }]
+        },
+        options:{
+          responsive:true,
+          scales:{ y:{ grid:{ color:gridColor }, ticks:{ color: tickColor, font:{ weight:'800' } }, suggestedMin:0, suggestedMax:100 }, x:{ ticks:{ color: tickColor, font:{ weight:'800' } }, grid:{ display:false } } },
+          plugins:{ legend:{ display:false }, tooltip:{ mode:'index', intersect:false } },
+          animation:{ duration:900 }
+        }
+      });
+    }
+
+    function renderSummary(){
+      const {projects,tasks} = getAll();
+      const completed = tasks.filter(t=>t.status==='Completed').length;
+      const pending = tasks.length - completed;
+      const rate = tasks.length ? (completed/tasks.length*100) : 0;
+
+      const html = [
+        {k:'Projects', v: projects.length, cls:'primary', icon:'fa-solid fa-diagram-project'},
+        {k:'Tasks', v: tasks.length, cls:'cyan', icon:'fa-solid fa-list-check'},
+        {k:'Completed', v: completed, cls:'green', icon:'fa-solid fa-circle-check'},
+        {k:'Pending', v: pending, cls:'amber', icon:'fa-solid fa-clock'}
+      ].map(x=>{
+        const pillCls = x.cls==='primary'?'pill primary': x.cls==='cyan'?'pill cyan': x.cls==='green'?'pill green': 'pill amber';
+        return `<div class="list-item"><div class="li-left"><div class="ico"><i class="${x.icon}"></i></div><div class="txt"><strong>${x.k}</strong><small>${x.v} items</small></div></div><div class="li-right"><span class="${pillCls}">${x.v}</span></div></div>`;
+      }).join('');
+
+      document.getElementById('reports_summary_list').innerHTML = html;
+
+      document.getElementById('btn_export_csv')?.addEventListener('click', ()=>{
+        const rows = [['type','id','name','status','priority','deadline','projectId'], ...tasks.map(t=>['task',t.id,t.name,t.status,t.priority,t.deadline,t.projectId])];
+        const csv = rows.map(r=> r.map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(',')).join('\n');
+        const blob = new Blob([csv],{type:'text/csv;charset=utf-8;'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href=url; a.download='project_management_tasks.csv';
+        a.click();
+        URL.revokeObjectURL(url);
+      });
+
+      document.getElementById('btn_export_json')?.addEventListener('click', ()=>{
+        const payload = {projects,tasks,exportedAt:new Date().toISOString()};
+        const blob = new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href=url; a.download='project_management_export.json';
+        a.click();
+        URL.revokeObjectURL(url);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', ()=>{
+      renderSummary();
+      buildCharts();
+    });
+  </script>
+
+  <footer style="margin-left:0; padding:18px 22px 24px;">
+    <div class="panel" style="border-radius:16px; padding:14px 16px; background: rgba(255,255,255,.45);">
+<div style="display:flex; flex-wrap:wrap; gap:10px; justify-content:flex-start; align-items:center; padding-left:50%; transform:translateX(-50%);">
+        <div style="color:var(--muted); font-weight:900; font-size:12px;">
+          Mini Project Developed By:
+          <span class="kbd">23AK1A3621 (Janaka Tejeswar)</span>
+          <span class="kbd">23AK1A3632 (Rohith)</span>
+          <span class="kbd">24AK5A3604 (Nani)</span>
+        </div>
+        <div style="color:var(--muted); font-weight:900; font-size:12px;">
+          Note: Still features are under development.
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
+
